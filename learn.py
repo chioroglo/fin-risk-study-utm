@@ -6,6 +6,10 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.linear_model import LinearRegression
 from sklearn.metrics import mean_squared_error, r2_score
 
+from analyse_model import analyse_model
+from target_mean_encoding import target_mean_encoding
+
+
 # Load the CSV file
 df = pd.read_csv('big4_financial_risk_compliance.csv')
 
@@ -19,14 +23,6 @@ df = df.drop(columns=['Firm_Name'])
 
 # Convert AI_Used_for_Auditing to binary flag
 df['AI_Used_for_Auditing'] = df['AI_Used_for_Auditing'].map({'Yes': 1, 'No': 0})
-
-# Target Mean Encoding Function
-def target_mean_encoding(data, col, target):
-    """
-    Encodes a categorical column using target mean encoding.
-    """
-    mean_encoded = data.groupby(col)[target].mean()
-    return data[col].map(mean_encoded)
 
 # Apply Target Mean Encoding to categorical columns
 for col in ['Industry_Affected']:
@@ -70,3 +66,6 @@ print(f'R-squared: {r2}')
 joblib.dump(model, "model.pkl")
 joblib.dump(scaler, "scaler.pkl")
 
+
+# analysis
+# analyse_model(model, X.columns.tolist())
