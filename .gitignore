@@ -3,3 +3,4 @@ __pycache__/
 Industry_Affected_target_means.csv
 scaler.pkl
 model.pkl
+resources/

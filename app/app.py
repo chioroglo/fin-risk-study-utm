@@ -4,6 +4,8 @@ from flask import Flask, Response, jsonify, request
 from flask_basicauth import BasicAuth
 from pydantic import ValidationError
 
+from service.financial_risk_model_service import FinancialRiskModelService
+from model.financial_risk_response import FinancialRiskResponse
 from model.financial_risk_model import FinancialRiskModel
 
 load_dotenv()
@@ -26,6 +28,10 @@ def calculate_risk_category():
         body = request.get_json()
         input_data = FinancialRiskModel(**body)
         print(input_data.dict())
+        model_service = FinancialRiskModelService()
+        response = model_service.predict_audit_effectiveness_score(input_data)
+        response = FinancialRiskResponse(**{ "audit_effectiveness_score": response[0] })
+        return jsonify(response.model_dump_json())
     except ValidationError as e:
         return jsonify({ "error": e.errors() }), 400
 

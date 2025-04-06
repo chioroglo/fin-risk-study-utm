@@ -31,7 +31,7 @@ for col in ['Industry_Affected']:
     mean_encoded = df.groupby(col)['Audit_Effectiveness_Score'].mean()
     
     # Save the means to a CSV file
-    mean_encoded.to_csv(f'{col}_target_means.csv', header=True)
+    mean_encoded.to_csv(f'resources/{col}_target_means.csv', header=True)
     
     # Apply target mean encoding to the dataset
     df[f'{col}_Encoded'] = target_mean_encoding(df, col, 'Audit_Effectiveness_Score')
@@ -69,5 +69,5 @@ joblib.dump(model, "resources/model.pkl")
 joblib.dump(scaler, "resources/scaler.pkl")
 
 
-# analysis
+# #analysis
 # analyse_model(model, X.columns.tolist())
