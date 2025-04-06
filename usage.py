@@ -3,13 +3,11 @@ import pandas as pd
 import numpy as np
 
 # Load the saved model and scaler
-model = joblib.load('model.pkl')
-scaler = joblib.load('scaler.pkl')
+model = joblib.load('resources/model.pkl')
+scaler = joblib.load('resources/scaler.pkl')
 
-# Load the target mean encoding CSV files for Firm_Name and Industry_Affected
-firm_name_means = pd.read_csv('Firm_Name_target_means.csv', index_col=0)
+# Load the target mean encoding CSV files Industry_Affected
 industry_means = pd.read_csv('Industry_Affected_target_means.csv', index_col=0)
-print(firm_name_means)
 print(industry_means)
 
 # Define the new input data
@@ -20,19 +18,17 @@ new_data = pd.DataFrame({
     'Fraud_Cases_Detected': [73],
     'Industry_Affected': ['Healthcare'],
     'Total_Revenue_Impact': [268.67],
-    'AI_Used_for_Auditing': [0],  # 'No' -> 0 (as per your original mapping)
+    'AI_Used_for_Auditing': [1],  # 'No' -> 0 (as per your original mapping)
     'Employee_Workload': [59],
-    'Audit_Effectiveness_Score': [6.7]
+    'Client_Satisfaction_Score': [6.7]
 })
 
-# Target Mean Encoding for Firm_Name and Industry_Affected
-# Apply Firm_Name encoding using the target mean from the CSV
-new_data['Firm_Name_Encoded'] = new_data['Firm_Name'].map(firm_name_means['Client_Satisfaction_Score'])
+# Target Mean Encoding for Industry_Affected
 # Apply Industry_Affected encoding using the target mean from the CSV
-new_data['Industry_Affected_Encoded'] = new_data['Industry_Affected'].map(industry_means['Client_Satisfaction_Score'])
+new_data['Industry_Affected_Encoded'] = new_data['Industry_Affected'].map(industry_means['Audit_Effectiveness_Score'])
 
 # Drop the original categorical columns after encoding
-new_data = new_data.drop(['Firm_Name', 'Industry_Affected'], axis=1)
+new_data = new_data.drop(['Industry_Affected'], axis=1)
 
 # Prepare features for prediction by selecting the columns that the model expects
 X_new = new_data

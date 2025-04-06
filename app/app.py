@@ -2,6 +2,7 @@ import os
 from dotenv import load_dotenv
 from flask import Flask, Response, jsonify, request
 from flask_basicauth import BasicAuth
+from flask_cors import CORS
 from pydantic import ValidationError
 
 from service.financial_risk_model_service import FinancialRiskModelService
@@ -10,6 +11,7 @@ from model.financial_risk_model import FinancialRiskModel
 
 load_dotenv()
 app = Flask(__name__, static_folder='/wwwroot')
+CORS(app)
 app.config['BASIC_AUTH_USERNAME']= os.getenv('BASIC_AUTH_USERNAME')
 app.config['BASIC_AUTH_PASSWORD'] = os.getenv('BASIC_AUTH_PASSWORD')
 basic_auth = BasicAuth(app)
